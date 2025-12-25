@@ -68,38 +68,96 @@
             pointer-events: none;
         }
 
-        /* --- NAVIGATION --- */
-        .nav-header {
+        /* --- NEW MENU BOX (OVERLAY) --- */
+        .nav-toggle {
             position: fixed;
-            top: 0; left: 0; width: 100%;
-            padding: 20px 40px;
+            top: 25px; right: 25px;
+            z-index: 2000;
+            cursor: pointer;
+            width: 50px; height: 50px;
+            background: rgba(0,0,0,0.6);
+            border: 1px solid var(--neon-gold);
+            border-radius: 50%;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            z-index: 1000;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
+            justify-content: center;
+            transition: all 0.3s;
         }
+        .nav-toggle i { font-size: 1.5rem; color: var(--neon-gold); }
+        .nav-toggle:hover { background: var(--neon-gold); }
+        .nav-toggle:hover i { color: #000; }
 
-        .brand-logo {
+        .menu-overlay {
+            position: fixed;
+            top: 0; right: -100%; /* Hidden by default */
+            width: 100%; height: 100vh;
+            max-width: 400px; /* Slide out width */
+            background: rgba(10, 10, 20, 0.98);
+            border-left: 2px solid var(--neon-gold);
+            z-index: 1500;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: right 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+            backdrop-filter: blur(15px);
+        }
+        
+        .menu-overlay.active { right: 0; }
+
+        .menu-link {
             font-family: var(--font-head);
-            font-size: 1.5rem;
-            color: var(--neon-gold);
-            letter-spacing: 2px;
-            border: 2px solid var(--neon-gold);
-            padding: 5px 15px;
-        }
-
-        .nav-links a {
+            font-size: 2rem;
             color: #fff;
             text-decoration: none;
-            margin-left: 20px;
-            font-family: var(--font-body);
+            margin: 15px 0;
             text-transform: uppercase;
-            font-size: 0.9rem;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             transition: color 0.3s;
+            position: relative;
         }
-        .nav-links a:hover { color: var(--neon-cyan); }
+        .menu-link:hover { color: var(--neon-cyan); }
+        .menu-link::after {
+            content: ''; display: block; width: 0; height: 2px;
+            background: var(--neon-gold); transition: width 0.3s;
+        }
+        .menu-link:hover::after { width: 100%; }
+
+        .menu-socials {
+            margin-top: 40px;
+            display: flex;
+            gap: 20px;
+        }
+        .menu-socials a {
+            color: var(--neon-gold);
+            font-size: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            width: 50px; height: 50px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .menu-socials a:hover {
+            background: var(--neon-gold);
+            color: #000;
+            transform: translateY(-3px);
+        }
+
+        /* --- HEADER LOGO ONLY --- */
+        .brand-logo {
+            position: fixed;
+            top: 25px; left: 25px;
+            z-index: 1000;
+            font-family: var(--font-head);
+            font-size: 1.2rem;
+            color: #fff;
+            letter-spacing: 2px;
+            background: rgba(0,0,0,0.6);
+            padding: 10px 20px;
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(5px);
+        }
 
         /* --- HERO SECTION --- */
         .hero {
@@ -115,7 +173,7 @@
         
         .hero h1 {
             font-family: var(--font-head);
-            font-size: clamp(3rem, 8vw, 6rem); /* Responsive text */
+            font-size: clamp(3rem, 8vw, 6rem);
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 5px;
@@ -132,20 +190,6 @@
             margin-bottom: 30px;
             border-bottom: 1px solid var(--neon-gold);
             padding-bottom: 10px;
-        }
-
-        .social-icons {
-            margin-top: 20px;
-        }
-        .social-icons a {
-            color: #fff;
-            font-size: 1.5rem;
-            margin: 0 15px;
-            transition: transform 0.3s, color 0.3s;
-        }
-        .social-icons a:hover {
-            color: var(--neon-cyan);
-            transform: translateY(-3px);
         }
 
         /* --- SECTIONS --- */
@@ -184,24 +228,19 @@
             grid-template-columns: 1fr 1.5fr;
             gap: 40px;
             align-items: center;
-            border-radius: 2px; /* Sharper edges for Uli feel */
+            border-radius: 2px; 
             position: relative;
         }
-        /* Decorative Uli Corners */
+        /* Uli Corners */
         .bio-card::before, .bio-card::after {
-            content: '';
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--neon-gold);
-            transition: all 0.3s;
+            content: ''; position: absolute; width: 20px; height: 20px;
+            border: 2px solid var(--neon-gold); transition: all 0.3s;
         }
         .bio-card::before { top: -2px; left: -2px; border-right: none; border-bottom: none; }
         .bio-card::after { bottom: -2px; right: -2px; border-left: none; border-top: none; }
 
         .bio-img img {
-            width: 100%;
-            height: auto;
+            width: 100%; height: auto;
             border: 1px solid rgba(255,255,255,0.1);
             filter: grayscale(20%);
         }
@@ -225,19 +264,15 @@
             gap: 50px;
         }
 
-        /* Left: The Player */
+        /* Left: Player */
         .player-list {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+            display: flex; flex-direction: column; gap: 15px;
         }
         .track-row {
             background: rgba(255,255,255,0.03);
             border-left: 3px solid var(--neon-gold);
             padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            display: flex; justify-content: space-between; align-items: center;
             transition: background 0.3s;
         }
         .track-row:hover { background: rgba(255,255,255,0.08); }
@@ -246,87 +281,60 @@
         .track-meta { font-size: 0.8rem; color: #888; text-transform: uppercase; letter-spacing: 1px; }
 
         .play-btn {
-            background: none;
-            border: 1px solid var(--neon-cyan);
-            color: var(--neon-cyan);
-            width: 40px; height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.3s;
+            background: none; border: 1px solid var(--neon-cyan);
+            color: var(--neon-cyan); width: 40px; height: 40px;
+            border-radius: 50%; cursor: pointer; transition: all 0.3s;
         }
         .play-btn:hover { background: var(--neon-cyan); color: #000; }
 
-        /* Right: Full Projects Links */
+        /* Right: Projects */
         .projects-list h3 { margin-bottom: 20px; color: var(--neon-gold); }
         .project-link {
-            display: block;
-            background: rgba(0,0,0,0.6);
-            border: 1px solid #333;
-            padding: 20px;
-            margin-bottom: 15px;
-            text-decoration: none;
-            color: #fff;
-            transition: transform 0.3s, border 0.3s;
-            position: relative;
-            overflow: hidden;
+            display: block; background: rgba(0,0,0,0.6);
+            border: 1px solid #333; padding: 20px;
+            margin-bottom: 15px; text-decoration: none;
+            color: #fff; transition: transform 0.3s, border 0.3s;
+            position: relative; overflow: hidden;
         }
-        .project-link:hover {
-            transform: translateX(10px);
-            border-color: var(--neon-cyan);
-        }
+        .project-link:hover { transform: translateX(10px); border-color: var(--neon-cyan); }
         .project-link h4 { font-family: var(--font-head); font-size: 1.2rem; }
         .project-link span { font-size: 0.8rem; color: #aaa; }
 
-        /* --- VISUALS (MASONRY) --- */
+        /* --- VISUALS --- */
         .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 20px;
         }
         .gallery-card {
-            height: 350px;
-            position: relative;
-            overflow: hidden;
+            height: 350px; position: relative; overflow: hidden;
             border: 1px solid rgba(255,255,255,0.1);
         }
         .gallery-card img {
-            width: 100%; height: 100%;
-            object-fit: cover;
+            width: 100%; height: 100%; object-fit: cover;
             transition: transform 0.6s;
         }
         .gallery-card:hover img { transform: scale(1.1); }
         .gallery-overlay {
-            position: absolute;
-            bottom: 0; left: 0; width: 100%;
-            padding: 20px;
-            background: linear-gradient(to top, #000, transparent);
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            padding: 20px; background: linear-gradient(to top, #000, transparent);
         }
 
         /* --- FOOTER --- */
         footer {
-            background: #000;
-            padding: 50px 20px;
-            text-align: center;
-            border-top: 1px solid var(--adire-accent);
+            background: #000; padding: 50px 20px;
+            text-align: center; border-top: 1px solid var(--adire-accent);
         }
         .contact-btn {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 12px 30px;
-            border: 2px solid var(--neon-gold);
-            color: var(--neon-gold);
-            text-decoration: none;
-            font-weight: bold;
-            letter-spacing: 2px;
-            transition: all 0.3s;
+            display: inline-block; margin-top: 20px;
+            padding: 12px 30px; border: 2px solid var(--neon-gold);
+            color: var(--neon-gold); text-decoration: none;
+            font-weight: bold; letter-spacing: 2px; transition: all 0.3s;
         }
         .contact-btn:hover { background: var(--neon-gold); color: #000; }
 
         /* --- RESPONSIVE --- */
         @media (max-width: 768px) {
             .bio-card, .music-wrapper { grid-template-columns: 1fr; }
-            .nav-header { padding: 20px; }
-            .nav-links { display: none; } /* Simplified for mobile */
         }
     </style>
 </head>
@@ -335,14 +343,24 @@
     <div class="bg-overlay"></div>
     <div class="uli-overlay"></div>
 
-    <nav class="nav-header">
-        <div class="brand-logo">BOY GEEZII</div>
-        <div class="social-icons">
+    <div class="brand-logo">BOY GEEZII</div>
+
+    <div class="nav-toggle" onclick="toggleMenu()">
+        <i class="fas fa-bars"></i>
+    </div>
+
+    <div class="menu-overlay" id="menuOverlay">
+        <a href="#bio" class="menu-link" onclick="toggleMenu()">About</a>
+        <a href="#music" class="menu-link" onclick="toggleMenu()">Discography</a>
+        <a href="#visuals" class="menu-link" onclick="toggleMenu()">Visuals</a>
+        <a href="mailto:boygeezy99@gmail.com" class="menu-link" onclick="toggleMenu()">Contact</a>
+        
+        <div class="menu-socials">
             <a href="https://instagram.com/_Apieceofgeezii" target="_blank"><i class="fab fa-instagram"></i></a>
             <a href="https://twitter.com/_Apieceofgeezii" target="_blank"><i class="fab fa-twitter"></i></a>
             <a href="https://tiktok.com/@_Apieceofgeezii" target="_blank"><i class="fab fa-tiktok"></i></a>
         </div>
-    </nav>
+    </div>
 
     <header class="hero">
         <h1>Boy Geezii</h1>
@@ -484,17 +502,31 @@
     </footer>
 
     <script>
+        // Toggle Menu Logic
+        function toggleMenu() {
+            const menu = document.getElementById('menuOverlay');
+            const icon = document.querySelector('.nav-toggle i');
+            
+            menu.classList.toggle('active');
+            
+            if(menu.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        }
+
         // Audio Player Logic
         let currentAudio = null;
         let currentBtn = null;
 
         function playAudio(id) {
             const audio = document.getElementById(id);
-            // Find button by traversing up to the row then down to button
             const btn = audio.parentElement.querySelector('.play-btn');
             const icon = btn.querySelector('i');
 
-            // If clicking same song
             if (currentAudio === audio && !audio.paused) {
                 audio.pause();
                 icon.classList.remove('fa-pause');
@@ -502,18 +534,15 @@
                 return;
             }
 
-            // Stop others
             if (currentAudio && !currentAudio.paused) {
                 currentAudio.pause();
                 currentAudio.currentTime = 0;
-                // Reset previous icon
                 if(currentBtn) {
                     currentBtn.querySelector('i').classList.remove('fa-pause');
                     currentBtn.querySelector('i').classList.add('fa-play');
                 }
             }
 
-            // Play new
             audio.play();
             icon.classList.remove('fa-play');
             icon.classList.add('fa-pause');
@@ -521,7 +550,6 @@
             currentAudio = audio;
             currentBtn = btn;
 
-            // Reset on end
             audio.onended = function() {
                 icon.classList.remove('fa-pause');
                 icon.classList.add('fa-play');

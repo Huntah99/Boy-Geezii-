@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BOY GEEZII | The Renegade</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- CSS VARIABLES & RESET --- */
+        :root {
+            --neon-cyan: #00f3ff;
+            --neon-gold: #ffd700;
+            --neon-purple: #bc13fe;
+            --bg-dark: #050505;
+            --glass-bg: rgba(20, 20, 30, 0.7);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+            --font-head: 'Orbitron', sans-serif;
+            --font-body: 'Rajdhani', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background-color: var(--bg-dark);
+            color: #fff;
+            font-family: var(--font-body);
+            overflow-x: hidden;
+        }
+
+        /* --- BACKGROUND FX --- */
+        /* Using gallery5 (City) as background since hero-bg is missing */
+        .bg-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                linear-gradient(to bottom, rgba(5,5,5,0.3), var(--bg-dark)),
+                url('gallery5.jpg.jpg') no-repeat center center/cover;
+            z-index: -1;
+            filter: brightness(0.6) contrast(1.2);
+        }
+
+        /* --- NAVIGATION (MENU BOX) --- */
+        .nav-toggle {
+            position: fixed;
+            top: 20px; right: 20px;
+            z-index: 1000;
+            background: rgba(0,0,0,0.8);
+            border: 1px solid var(--neon-cyan);
+            padding: 10px 15px;
+            cursor: pointer;
+            font-family: var(--font-head);
+            color: var(--neon-cyan);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+        .nav-toggle:hover {
+            box-shadow: 0 0 15px var(--neon-cyan);
+            background: var(--neon-cyan);
+            color: #000;
+        }
+
+        .menu-box {
+            position: fixed;
+            top: 0; right: -300px;
+            width: 300px;
+            height: 100vh;
+            background: rgba(10, 10, 10, 0.95);
+            border-left: 1px solid var(--neon-cyan);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: right 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .menu-box.active { right: 0; }
+        
+        .menu-box a {
+            color: #fff;
+            text-decoration: none;
+            font-family: var(--font-head);
+            font-size: 1.5rem;
+            margin: 20px 0;
+            transition: color 0.3s;
+            text-transform: uppercase;
+        }
+        .menu-box a:hover { color: var(--neon-gold); text-shadow: 0 0 8px var(--neon-gold); }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        h1 {
+            font-family: var(--font-head);
+            font-size: 4rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            background: linear-gradient(90deg, #fff, var(--neon-cyan), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            letter-spacing: 3px;
+            color: var(--neon-gold);
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+
+        /* --- SECTIONS COMMON STYLE --- */
+        section {
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            font-family: var(--font-head);
+            font-size: 2.5rem;
+            color: #fff;
+            border-bottom: 2px solid var(--neon-purple);
+            display: inline-block;
+            margin-bottom: 40px;
+            padding-bottom: 10px;
+        }
+
+        /* --- INFO BOX (BIO) --- */
+        .bio-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+            background: var(--glass-bg);
+            border: var(--glass-border);
+            padding: 40px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .bio-img img {
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid var(--neon-gold);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+        }
+
+        .bio-text h3 {
+            color: var(--neon-cyan);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        .bio-text p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: #ddd;
+        }
+
+        /* --- DISCOGRAPHY (PLAYER) --- */
+        .track-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .track-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 8px;
+            transition: transform 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .track-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+        }
+
+        .track-info h4 { font-size: 1.2rem; margin-bottom: 5px; }
+        .track-info span { font-size: 0.9rem; color: var(--neon-gold); }
+        
+        .play-btn {
+            margin-top: 15px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--neon-purple);
+            border: none;
+            color: #fff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+        .play-btn:hover { background: #fff; color: var(--neon-purple); }
+
+        /* --- VISUALIZERS (GALLERY) --- */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        .gallery-item {
+            height: 300px;
+            background-color: #000;
+            overflow: hidden;
+            border-radius: 5px;
+            position: relative;
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+            filter: grayscale(80%);
+        }
+        .gallery-item:hover img {
+            transform: scale(1.1);
+            filter: grayscale(0%);
+        }
+
+        /* --- CONTACT BOX --- */
+        .contact-box {
+            text-align: center;
+            background: linear-gradient(135deg, rgba(20,20,30,0.9), rgba(0,0,0,0.9));
+            padding: 50px;
+            border: 1px solid var(--neon-cyan);
+            position: relative;
+        }
+        .contact-box::before {
+            content: '';
+            position: absolute;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: linear-gradient(45deg, var(--neon-cyan), transparent, var(--neon-purple));
+            z-index: -1;
+            filter: blur(10px);
+        }
+        
+        .email-link {
+            font-size: 1.5rem;
+            color: var(--neon-gold);
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 20px;
+            border: 2px solid var(--neon-gold);
+            padding: 10px 30px;
+            transition: all 0.3s;
+        }
+        .email-link:hover {
+            background: var(--neon-gold);
+            color: #000;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            text-align: center;
+            padding: 30px;
+            border-top: 1px solid #333;
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        /* MOBILE TWEAKS */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .bio-container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-overlay"></div>
+
+    <div class="nav-toggle" onclick="toggleMenu()">MENU //</div>
+    <div class="menu-box" id="menuBox">
+        <a href="#home" onclick="toggleMenu()">Home</a>
+        <a href="#about" onclick="toggleMenu()">The Renegade</a>
+        <a href="#music" onclick="toggleMenu()">Discography</a>
+        <a href="#visuals" onclick="toggleMenu()">Visuals</a>
+        <a href="#contact" onclick="toggleMenu()">Contact</a>
+    </div>
+
+    <div class="hero" id="home">
+        <h1>BOY GEEZII</h1>
+        <div class="subtitle">Afro-Fusion / Renegade / World Music</div>
+        <p style="max-width: 600px; color: #ccc;">"My swag is divine so I brandish it."</p>
+    </div>
+
+    <section id="about">
+        <div class="section-title">01 // THE RENEGADE</div>
+        <div class="bio-container">
+            <div class="bio-img">
+                <img src="Bio-pic.jpg.jpg" alt="Boy Geezii Profile">
+            </div>
+            <div class="bio-text">
+                <h3>Kareem Oluwatomi Lawal</h3>
+                <p><strong>Base:</strong> Abuja, Nigeria | <strong>Active Since:</strong> 2019</p>
+                <p>Boy Geezii is an Afro-Fusion and Hip-Hop artist known for his unique "Renegade" sound. Blending World Music folklore with gritty rap and melodic rhythms, he creates sonic landscapes that tell stories of resilience, love, and the hustle.</p>
+                <p>With major projects like <em>Cungrachulayshuns X Kondolenses</em> and <em>Terribull @ Gudbuys</em>, Geezii continues to push the boundaries of the Nigerian soundscape.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="music">
+        <div class="section-title">02 // TRANSMISSIONS</div>
+        <div class="track-grid">
+            
+            <div class="track-card">
+                <div class="track-info">
+                    <h4>Presharhh</h4>
+                    <span>Album: Cungrachulayshuns X Kondolenses</span>
+                </div>
+                <button class="play-btn" onclick="playAudio('track1')">▶</button>
+                <audio id="track1" src="Track1.mp3.mp3"></audio> 
+            </div>
+
+            <div class="track-card">
+                <div class="track-info">
+                    <h4>Ravers</h4>
+                    <span>Album: Terribull @ Gudbuys</span>
+                </div>
+                <button class="play-btn" onclick="playAudio('track2')">▶</button>
+                <audio id="track2" src="Track2.mp3.mp3"></audio>
+            </div>
+
+            <div class="track-card">
+                <div class="track-info">
+                    <h4>Met In Fes (Sans Toi)</h4>
+                    <span>Single (2025)</span>
+                </div>
+                <button class="play-btn" onclick="playAudio('track3')">▶</button>
+                <audio id="track3" src="Track3.mp3.mp3"></audio>
+            </div>
+
+            <div class="track-card">
+                <div class="track-info">
+                    <h4>Legacy (feat. Virus)</h4>
+                    <span>Album: The Nomads Rhythm</span>
+                </div>
+                <button class="play-btn" onclick="playAudio('track4')">▶</button>
+                <audio id="track4" src="Track4.mp3.mp3"></audio>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="visuals">
+        <div class="section-title">03 // VISUALS</div>
+        <div class="gallery-grid">
+            <div class="gallery-item"><img src="gallery1.jpg.JPG" alt="Renegade Mask"></div>
+            <div class="gallery-item"><img src="gallery2.jpg.jpg" alt="Folklore Camp"></div>
+            <div class="gallery-item"><img src="gallery3.jpg.jpg" alt="Lifestyle"></div>
+            <div class="gallery-item"><img src="gallery4.jpg.JPG" alt="Tradition"></div>
+            <div class="gallery-item"><img src="gallery5.jpg.jpg" alt="Cyberpunk City"></div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="contact-box">
+            <h2 style="font-family: var(--font-head); margin-bottom: 20px;">BOOKINGS & INQUIRIES</h2>
+            <p>For features, shows, and press.</p>
+            <a href="mailto:boygeezy99@gmail.com" class="email-link">boygeezy99@gmail.com</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Boy Geezii / Renegade Music. All Rights Reserved.</p>
+        <p style="margin-top:10px; font-size: 0.8rem; opacity: 0.5;">Designed with Arcane Esthetics</p>
+    </footer>
+
+    <script>
+        // Menu Toggle Logic
+        function toggleMenu() {
+            const menu = document.getElementById('menuBox');
+            menu.classList.toggle('active');
+        }
+
+        // Simple Audio Player Logic
+        let currentAudio = null;
+        let currentBtn = null;
+
+        function playAudio(id) {
+            const audio = document.getElementById(id);
+            const btn = audio.previousElementSibling; 
+
+            // If clicking the same song that is playing
+            if (currentAudio === audio && !audio.paused) {
+                audio.pause();
+                btn.innerHTML = "▶";
+                return;
+            }
+
+            // Stop currently playing song if exists
+            if (currentAudio && !currentAudio.paused) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+                if(currentBtn) currentBtn.innerHTML = "▶";
+            }
+
+            // Play new song
+            audio.play();
+            btn.innerHTML = "❚❚"; // Pause icon
+            
+            // Update reference
+            currentAudio = audio;
+            currentBtn = btn;
+
+            // Reset button when song ends
+            audio.onended = function() {
+                btn.innerHTML = "▶";
+            };
+        }
+    </script>
+</body>
+</html>
